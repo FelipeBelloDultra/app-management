@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+*:focus {
+  @apply focus:ring-2 focus:outline-none focus:ring-cyan-700;
+}
