@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: Development
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 3000:3000
+      - 5555:5555
+    networks:
+      - app-management-net
+
+  postgresdb:
+    image: "postgres:16-alpine"
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - app-management-net
+
+networks:
+  app-management-net:
+    driver: bridge
+
+volumes:
+  pg_data:

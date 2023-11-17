@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskStatus {
+  WAITING
+  DOING
+  FINISHED
+}
+
+model Board {
+  id          String @id @default(uuid())
+  name        String
+  color       String
+  description String
+
+  tasks Task[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("boards")
+}
+
+model Task {
+  id           String     @id @default(uuid())
+  name         String
+  descriptions String?
+  status       TaskStatus
+
+  expires_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  tags     Tag[]
+  board    Board  @relation(fields: [board_id], references: [id])
+  board_id String
+
+  @@map("tasks")
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  slug  String @unique
+  color String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  task    Task   @relation(fields: [task_id], references: [id])
+  task_id String
+
+  @@map("tags")
+}
