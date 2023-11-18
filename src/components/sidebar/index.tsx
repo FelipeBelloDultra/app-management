@@ -1,7 +1,5 @@
-import { Plus } from "lucide-react";
-
-import { Button } from "..";
 import { Links } from "./components/links";
+import { CreateBoard } from "./components/create-board";
 
 interface BoardsResponse {
   data: Array<{
@@ -38,16 +36,13 @@ export async function Sidebar() {
         {hasResponseData ? (
           <Links boards={boards} />
         ) : (
-          <div className="rounded-md bg-gray-100 p-3 flex items-center justify-center mt-4">
+          <div className="rounded bg-gray-100 p-3 flex items-center justify-center mt-4">
             <p className="font-bold text-sm">No board registered</p>
           </div>
         )}
       </div>
 
-      <Button color="secondary" size="sm" className="w-full">
-        <Plus className="mr-1 text-gray-800" size={18} />
-        Create new board
-      </Button>
+      <CreateBoard />
     </div>
   );
 }

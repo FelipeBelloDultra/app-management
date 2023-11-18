@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="rounded-md bg-gray-50 border border-gray-100 flex items-center flex-col justify-center p-16 shadow-sm">
+    <div className="rounded bg-gray-50 border border-gray-100 flex items-center flex-col justify-center p-16 shadow-sm">
       <div className="self-start mb-7">
         <h1 className="font-bold text-2xl text-gray-700">
           Welcome to <span className="text-cyan-500">App Management</span>!
@@ -13,7 +13,13 @@ export default function Home() {
         </p>
       </div>
 
-      <Image src="/no-data.svg" alt="No data image" width="347" height="332" />
+      <Image
+        src="/no-data.svg"
+        alt="No data image"
+        width="347"
+        height="332"
+        className="h-[347px] w-[332px]"
+      />
     </div>
   );
 }
