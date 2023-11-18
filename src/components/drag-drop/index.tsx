@@ -1,8 +1,8 @@
 "use client";
 
-import { DragDropColumn } from "./column";
-import { DragDropColumnItem } from "./column-item";
-import { DragDropRoot } from "./root";
+import { DragDropColumn } from "./components/column";
+import { DragDropColumnItem } from "./components/column-item";
+import { DragDropRoot } from "./components/root";
 
 export const DragDrop = {
   Root: DragDropRoot,
