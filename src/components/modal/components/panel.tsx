@@ -16,7 +16,7 @@ export function ModalPanel({ children, ...props }: ModalPanelProps) {
     >
       <Dialog.Panel
         {...props}
-        className="mx-auto max-w-xl w-full rounded border border-gray-100 bg-white py-4 px-8 relative"
+        className="mx-auto max-w-xl w-full rounded border border-gray-100 bg-white py-4 px-8 relative flex flex-col gap-3"
       >
         {children}
       </Dialog.Panel>

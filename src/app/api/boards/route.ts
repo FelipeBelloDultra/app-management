@@ -2,12 +2,20 @@ import { z } from "zod";
 import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "~/lib/prisma";
-import { setTimeout } from "timers/promises";
 
 const createBoardSchema = z.object({
-  name: z.string(),
-  color: z.string().regex(new RegExp(/^(0x|0X)?[a-fA-F0-9]+$'/)),
-  description: z.string(),
+  name: z.string().min(4, {
+    message: "Enter at least 4 characters",
+  }),
+  color: z.string().regex(new RegExp(/^#?([a-f0-9]{6}|[a-f0-9]{3})$/)),
+  description: z
+    .string()
+    .min(4, {
+      message: "Enter at least 4 characters",
+    })
+    .max(255, {
+      message: "Enter a maximum of 255 characters",
+    }),
 });
 
 export async function GET() {

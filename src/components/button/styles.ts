@@ -1,7 +1,7 @@
 import { tv, VariantProps } from "tailwind-variants";
 
 export const buttonStyles = tv({
-  base: `flex items-center justify-center rounded px-3 font-bold transition-all data-[disabled=false]:hover:opacity-70 data-[disabled=false]:cursor-pointer`,
+  base: "flex items-center justify-center rounded px-3 font-bold transition-all data-[disabled=false]:hover:opacity-70 data-[disabled=false]:cursor-pointer",
   variants: {
     color: {
       primary: "bg-cyan-500 text-white active:bg-cyan-600",

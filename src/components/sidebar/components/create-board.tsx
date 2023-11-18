@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
+import { CreateBoardForm } from "./create-board-form";
 import { Button, Modal } from "~/components";
 
 export function CreateBoard() {
@@ -24,10 +25,7 @@ export function CreateBoard() {
         open={openCreateBoardModal}
         onClose={() => setOpenCreateBoardModal(false)}
       >
-        <Modal.Panel>
-          <Modal.Title>Hello</Modal.Title>
-          I&apos;am a full modal
-        </Modal.Panel>
+        <CreateBoardForm onCloseForm={() => setOpenCreateBoardModal(false)} />
       </Modal.Root>
     </>
   );
