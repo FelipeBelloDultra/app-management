@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -33,12 +34,22 @@ export function CreateBoardForm({ onCloseForm }: CreateBoardForm) {
   } = useForm<CreateBoardData>({
     resolver: zodResolver(createBoardSchema),
   });
+  const router = useRouter();
 
   async function handleSubmitCreateBoardForm(data: CreateBoardData) {
-    console.log({ data });
+    const response = await fetch("http://localhost:3000/api/boards", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const { data: responseData }: { data: { id: string } } =
+      await response.json();
+    router.push(`/dashboard/${responseData.id}`);
+    router.refresh();
+    onCloseForm();
   }
-
-  console.log({ errors });
 
   return (
     <Modal.Panel>
