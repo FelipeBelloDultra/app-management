@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { Plus } from "lucide-react";
 
 import { Button } from "..";
+import { Links } from "./components/links";
 
 interface BoardsResponse {
   data: Array<{
@@ -36,19 +36,7 @@ export async function Sidebar() {
         </h3>
 
         {hasResponseData ? (
-          <div className="mt-4 flex flex-col gap-2">
-            {boards.map((board) => (
-              <Link
-                href={`/dashboard/${board.id}`}
-                prefetch={false}
-                key={board.id}
-                className={`font-medium text-lg text-gray-950 py-2 mx-1 px-5 hover:underline transition-all hover:bg-gray-100 border-l-2`}
-                style={{ borderLeftColor: board.color }}
-              >
-                {board.name}
-              </Link>
-            ))}
-          </div>
+          <Links boards={boards} />
         ) : (
           <div className="rounded-md bg-gray-100 p-3 flex items-center justify-center mt-4">
             <p className="font-bold text-sm">No board registered</p>
