@@ -31,7 +31,7 @@ model Task {
   id           String     @id @default(uuid())
   name         String
   descriptions String?
-  status       TaskStatus
+  status       TaskStatus @default(WAITING)
 
   expires_at DateTime
   created_at DateTime @default(now())
