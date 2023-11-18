@@ -9,3 +9,12 @@
 *:focus {
   @apply focus:ring-2 focus:outline-none focus:ring-cyan-700;
 }
+
+html,
+body {
+  @apply h-full;
+}
+
+body {
+  @apply bg-slate-100 text-gray-900 antialiased;
+}
