@@ -4,10 +4,14 @@ import { Plus } from "lucide-react";
 import { Button } from "..";
 
 interface BoardsResponse {
-  data: Array<{ id: string; name: string }>;
+  data: Array<{
+    id: string;
+    name: string;
+    color: string;
+  }>;
 }
 
-export async function Sidebar() {
+async function getBoards() {
   const response = await fetch("http://localhost:3000/api/boards", {
     method: "GET",
     next: {
@@ -15,13 +19,18 @@ export async function Sidebar() {
       tags: ["boards"],
     },
   });
-  const { data: boards }: BoardsResponse = await response.json();
+  const { data }: BoardsResponse = await response.json();
 
+  return data;
+}
+
+export async function Sidebar() {
+  const boards = await getBoards();
   const hasResponseData = !!boards.length;
 
   return (
-    <div className="h-full w-64 bg-white shadow-sm px-4 py-10 flex flex-col justify-between">
-      <div className="mt-12 flex-1 mb-6 overflow-y-auto">
+    <div className="h-full w-64 bg-white shadow-sm px-4 py-10 flex flex-col gap-4">
+      <div className="mt-12 py-1 mb-6 overflow-y-auto">
         <h3 className="uppercase font-medium text-xl text-gray-500">
           My boards
         </h3>
@@ -33,7 +42,8 @@ export async function Sidebar() {
                 href={`/dashboard/${board.id}`}
                 prefetch={false}
                 key={board.id}
-                className="font-medium text-lg text-gray-950 py-2 mx-1 px-1 hover:underline transition-all rounded-md hover:bg-gray-100"
+                className={`font-medium text-lg text-gray-950 py-2 mx-1 px-5 hover:underline transition-all hover:bg-gray-100 border-l-2`}
+                style={{ borderLeftColor: board.color }}
               >
                 {board.name}
               </Link>
