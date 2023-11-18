@@ -1,3 +1,5 @@
+import { Board } from "~/components";
+
 type BoardIdPageProps = {
   params: {
     boardId: string;
@@ -41,7 +43,7 @@ export default async function Page({ params }: BoardIdPageProps) {
   const data = await getBoardById(params.boardId);
 
   return (
-    <main>
+    <main className="flex flex-col gap-9">
       <header
         className="flex flex-col gap-3 border-b-2 pb-5"
         style={{ borderColor: data.color }}
@@ -57,6 +59,8 @@ export default async function Page({ params }: BoardIdPageProps) {
 
         <pre className="text-sm text-gray-600">{data.description}</pre>
       </header>
+
+      <Board tasks={data.tasks} />
     </main>
   );
 }
