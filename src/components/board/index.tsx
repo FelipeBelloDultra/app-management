@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { useParams } from "next/navigation";
+import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 import { DragDrop } from "..";
 
@@ -32,14 +34,17 @@ type BoardProps = {
 function reduceTasks(tasks: Task[]) {
   return tasks.reduce(
     (acc, task) => {
-      if (acc[task.status]) {
-        acc[task.status].push(task);
-        return acc;
-      }
+      const taskGroup = acc[task.status] ?? [];
+      const sortedTaskGroup = taskGroup
+        .concat(task)
+        .sort(
+          (a, b) =>
+            new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
+        );
 
       return {
         ...acc,
-        [task.status]: [task],
+        [task.status]: sortedTaskGroup,
       };
     },
     {} as {
@@ -98,8 +103,25 @@ export function Board({ tasks, ...rest }: BoardProps) {
                 draggableId={taskItem.id}
                 index={index}
               >
-                <div className="bg-white p-2 border rounded">
-                  <p>{taskItem.name}</p>
+                <div className="bg-white p-2 border rounded flex flex-col gap-2">
+                  <header className="flex items-start justify-between">
+                    <h4 className="text-sm font-bold text-gray-800">
+                      {taskItem.name}
+                    </h4>
+
+                    <Link
+                      href={`/dashboard/task/${taskItem.id}`}
+                      className="text-cyan-900 p-2 -m-2 transition-opacity hover:opacity-70"
+                    >
+                      <ExternalLink height={18} width={18} />
+                    </Link>
+                  </header>
+
+                  {taskItem.descriptions && (
+                    <p className="text-xs text-gray-700">
+                      {taskItem.descriptions}
+                    </p>
+                  )}
                 </div>
               </DragDrop.ColumnItem>
             ))}

@@ -18,6 +18,7 @@ export function DragDropColumnItem({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          className="mb-2"
         >
           {children}
         </div>

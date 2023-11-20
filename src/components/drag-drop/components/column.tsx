@@ -14,7 +14,7 @@ export function DragDropColumn({
   return (
     <div className="w-full overflow-auto">
       <div className="bg-slate-100 p-4 border rounded">
-        <h3 className="font-bold text-lg text-gray-700 mb-4">{columnName}</h3>
+        <h3 className="font-medium text-lg text-gray-700 mb-4">{columnName}</h3>
 
         <div className="h-auto overflow-hidden">
           <Droppable droppableId={droppableId}>
