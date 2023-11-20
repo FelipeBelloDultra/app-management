@@ -12,16 +12,22 @@ export function DragDropColumn({
   children,
 }: DragDropColumnProps) {
   return (
-    <div className="w-1/3 bg-gray-100">
-      {columnName}
+    <div className="w-1/3 bg-gray-100 p-4 border rounded">
+      <h3 className="font-medium text-lg text-gray-700 uppercase mb-4">
+        {columnName}
+      </h3>
 
-      <Droppable droppableId={droppableId}>
-        {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
-            {children}
-          </div>
-        )}
-      </Droppable>
+      <div className="h-auto overflow-auto">
+        <Droppable droppableId={droppableId}>
+          {(provided) => (
+            <div {...provided.droppableProps} ref={provided.innerRef}>
+              {children}
+
+              <span className="hidden">{provided.placeholder}</span>
+            </div>
+          )}
+        </Droppable>
+      </div>
     </div>
   );
 }

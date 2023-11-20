@@ -1,6 +1,6 @@
 import { Draggable } from "react-beautiful-dnd";
 
-type ColumnItemProps = {
+type DragDropColumnItemProps = {
   index: number;
   draggableId: string;
   children: React.ReactNode;
@@ -10,7 +10,7 @@ export function DragDropColumnItem({
   children,
   draggableId,
   index,
-}: ColumnItemProps) {
+}: DragDropColumnItemProps) {
   return (
     <Draggable index={index} draggableId={draggableId}>
       {(provided) => (

@@ -1,9 +1,10 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
 
 import { DragDrop } from "..";
+import { useParams } from "next/navigation";
 
 type Task = {
   id: string;
@@ -56,11 +57,13 @@ const BOARD_COLUMNS = [
   },
 ] as const;
 
-export function Board({ tasks }: BoardProps) {
+export function Board({ tasks, ...rest }: BoardProps) {
   const [reducedTasks, setReducedTasks] = useState(reduceTasks(tasks));
 
-  function onDragEnd(result: DropResult) {
-    const { destination, source } = result;
+  const { boardId } = useParams();
+
+  async function onDragEnd(result: DropResult) {
+    const { draggableId, destination, source } = result;
 
     if (!destination) return;
 
@@ -79,6 +82,14 @@ export function Board({ tasks }: BoardProps) {
     updatedTasks[destinationId] = [draggedItem, ...updatedTasks[destinationId]];
 
     setReducedTasks(updatedTasks);
+
+    await fetch(`http://localhost:3000/api/tasks/${draggableId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        boardId,
+        status: destinationId,
+      }),
+    });
   }
 
   return (
@@ -96,7 +107,9 @@ export function Board({ tasks }: BoardProps) {
                 draggableId={taskItem.id}
                 index={index}
               >
-                <p>{taskItem.name}</p>
+                <div className="bg-white p-2 border rounded">
+                  <p>{taskItem.name}</p>
+                </div>
               </DragDrop.ColumnItem>
             ))}
           </DragDrop.Column>
