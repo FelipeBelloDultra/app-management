@@ -84,7 +84,7 @@ export function Board({ tasks, ...rest }: BoardProps) {
   }
 
   return (
-    <div className="bg-white flex-1 rounded border p-4 flex gap-4">
+    <div className="h-full p-4 bg-white rounded border flex gap-4">
       <DragDrop.Root onDragEnd={onDragEnd}>
         {Object.entries(BOARD_COLUMNS).map(([statusPrefix, statusTitle]) => (
           <DragDrop.Column

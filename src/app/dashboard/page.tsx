@@ -18,7 +18,7 @@ export default function Home() {
         alt="No data image"
         width="347"
         height="332"
-        className="h-[347px] w-[332px]"
+        className="h-[332px] w-[347px]"
       />
     </div>
   );

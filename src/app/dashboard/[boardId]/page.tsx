@@ -1,4 +1,5 @@
-import { Board } from "~/components";
+import Image from "next/image";
+import { Board, Button } from "~/components";
 
 type BoardIdPageProps = {
   params: {
@@ -43,7 +44,7 @@ export default async function Page({ params }: BoardIdPageProps) {
   const data = await getBoardById(params.boardId);
 
   return (
-    <main className="flex flex-col gap-9">
+    <main className="flex flex-col gap-9 h-full">
       <header
         className="flex flex-col gap-3 border-b-2 pb-5"
         style={{ borderColor: data.color }}
@@ -58,9 +59,29 @@ export default async function Page({ params }: BoardIdPageProps) {
         </div>
 
         <pre className="text-sm text-gray-600">{data.description}</pre>
+
+        <Button className="w-[200px]" size="sm">
+          Create new task
+        </Button>
       </header>
 
-      <Board tasks={data.tasks} />
+      <section className="relative h-full">
+        {!!data.tasks.length ? (
+          <div className="absolute inset-0 overflow-hidden">
+            <Board tasks={data.tasks} />
+          </div>
+        ) : (
+          <div className="text-center">
+            <Image
+              src="/create-task.svg"
+              alt="No data image"
+              width="547"
+              height="326"
+              className="h-[326px] w-[547px] inline-block"
+            />
+          </div>
+        )}
+      </section>
     </main>
   );
 }
