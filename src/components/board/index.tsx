@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { DropResult } from "react-beautiful-dnd";
+import { useParams } from "next/navigation";
 
 import { DragDrop } from "..";
-import { useParams } from "next/navigation";
 
 type Task = {
   id: string;
@@ -17,7 +17,13 @@ type Task = {
   board_id: string;
 };
 
-type TaskStatus = "WAITING" | "DOING" | "FINISHED";
+const BOARD_COLUMNS = {
+  WAITING: "Waiting",
+  DOING: "Doing",
+  FINISHED: "Finished",
+} as const;
+
+type TaskStatus = keyof typeof BOARD_COLUMNS;
 
 type BoardProps = {
   tasks: Task[];
@@ -41,21 +47,6 @@ function reduceTasks(tasks: Task[]) {
     }
   );
 }
-
-const BOARD_COLUMNS = [
-  {
-    name: "waiting",
-    value: "WAITING",
-  },
-  {
-    name: "doing",
-    value: "DOING",
-  },
-  {
-    name: "finished",
-    value: "FINISHED",
-  },
-] as const;
 
 export function Board({ tasks, ...rest }: BoardProps) {
   const [reducedTasks, setReducedTasks] = useState(reduceTasks(tasks));
@@ -95,13 +86,13 @@ export function Board({ tasks, ...rest }: BoardProps) {
   return (
     <div className="bg-white flex-1 rounded border p-4 flex gap-4">
       <DragDrop.Root onDragEnd={onDragEnd}>
-        {BOARD_COLUMNS.map((boardColumn) => (
+        {Object.entries(BOARD_COLUMNS).map(([statusPrefix, statusTitle]) => (
           <DragDrop.Column
-            key={boardColumn.value}
-            droppableId={boardColumn.value}
-            columnName={boardColumn.name}
+            key={statusPrefix}
+            droppableId={statusPrefix}
+            columnName={statusTitle}
           >
-            {reducedTasks[boardColumn.value].map((taskItem, index) => (
+            {reducedTasks[statusPrefix].map((taskItem, index) => (
               <DragDrop.ColumnItem
                 key={taskItem.id}
                 draggableId={taskItem.id}
