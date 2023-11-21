@@ -11,7 +11,21 @@ export async function GET(
       id: params.id,
     },
     select: {
-      tasks: true,
+      tasks: {
+        select: {
+          id: true,
+          name: true,
+          tags: {
+            select: {
+              color: true,
+              slug: true,
+            },
+          },
+          descriptions: true,
+          status: true,
+          updated_at: true,
+        },
+      },
       description: true,
       created_at: true,
       name: true,

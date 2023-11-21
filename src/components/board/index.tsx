@@ -13,10 +13,9 @@ type Task = {
   name: string;
   descriptions: string | null;
   status: TaskStatus;
-  expires_at: Date;
-  created_at: Date;
   updated_at: Date;
   board_id: string;
+  tags: any[];
 };
 
 const BOARD_COLUMNS = {
@@ -53,7 +52,7 @@ function reduceTasks(tasks: Task[]) {
   );
 }
 
-export function Board({ tasks, ...rest }: BoardProps) {
+export function Board({ tasks }: BoardProps) {
   const [reducedTasks, setReducedTasks] = useState(reduceTasks(tasks));
 
   const { boardId } = useParams();
@@ -122,6 +121,12 @@ export function Board({ tasks, ...rest }: BoardProps) {
                       {taskItem.descriptions}
                     </p>
                   )}
+
+                  {taskItem.tags.map((tag) => (
+                    <span className="text-xs" key={tag}>
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </DragDrop.ColumnItem>
             ))}
