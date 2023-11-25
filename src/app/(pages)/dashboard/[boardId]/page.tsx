@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Button } from "~/components";
+import { Accordion } from "~/components/accordion";
+import { Board } from "~/components/board";
 
 type BoardIdPageProps = {
   params: {
@@ -67,7 +69,7 @@ export default async function Page({ params }: BoardIdPageProps) {
 
       <section className="relative h-full">
         {!!data.tasks.length ? (
-          data.tasks.map((task) => <p key={task.id}>{task.name}</p>)
+          <Board tasks={data.tasks} />
         ) : (
           <div className="text-center">
             <Image

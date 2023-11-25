@@ -12,7 +12,7 @@ export default function RootLayout({
       <div className="flex h-[calc(100%-4rem)]">
         <Sidebar />
 
-        <div className="relative flex-1">
+        <div className="relative max-w-5xl px-5 w-full mx-auto">
           <div className="px-14 py-10 absolute inset-0 overflow-y-auto">
             {children}
           </div>

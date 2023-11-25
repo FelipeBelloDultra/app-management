@@ -24,6 +24,8 @@ export async function GET(
           descriptions: true,
           status: true,
           updated_at: true,
+          created_at: true,
+          expires_at: true,
         },
       },
       description: true,
@@ -33,6 +35,8 @@ export async function GET(
       color: true,
     },
   });
+
+  console.log(boards.tasks[0].expires_at);
 
   return NextResponse.json({ data: boards }, { status: 200 });
 }

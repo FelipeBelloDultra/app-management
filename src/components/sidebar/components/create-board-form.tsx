@@ -44,8 +44,13 @@ export function CreateBoardForm({ onCloseForm }: CreateBoardForm) {
         "Content-Type": "application/json",
       },
     });
-    const { data: responseData }: { data: { id: string } } =
-      await response.json();
+    const {
+      data: responseData,
+    }: {
+      data: {
+        id: string;
+      };
+    } = await response.json();
     router.push(`/dashboard/${responseData.id}`);
     router.refresh();
     onCloseForm();
