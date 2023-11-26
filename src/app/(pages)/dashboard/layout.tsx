@@ -1,4 +1,4 @@
-import { Header, Sidebar } from "~/components";
+import { Header, Sidebar } from "~/components/dashboard";
 
 export default function RootLayout({
   children,

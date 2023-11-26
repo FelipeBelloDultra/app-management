@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 
-import { CreateBoardForm } from "./create-board-form";
-import { Button, Modal } from "~/components";
+import { Button, Modal } from "~/components/common";
+import { CreateBoardForm } from ".";
 
 export function CreateBoard() {
   const [openCreateBoardModal, setOpenCreateBoardModal] = useState(false);

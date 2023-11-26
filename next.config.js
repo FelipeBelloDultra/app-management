@@ -7,7 +7,6 @@ const nextConfig = {
       permanent: false,
     },
   ],
-  reactStrictMode: false,
 };
 
 module.exports = nextConfig;

@@ -30,30 +30,15 @@ model Board {
 model Task {
   id           String     @id @default(uuid())
   name         String
-  descriptions String?
+  descriptions String
   status       TaskStatus @default(WAITING)
 
   expires_at DateTime
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  tags     Tag[]
   board    Board  @relation(fields: [board_id], references: [id])
   board_id String
 
   @@map("tasks")
-}
-
-model Tag {
-  id    String @id @default(uuid())
-  slug  String @unique
-  color String
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-
-  task    Task   @relation(fields: [task_id], references: [id])
-  task_id String
-
-  @@map("tags")
 }

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { Button } from "~/components";
-import { Accordion } from "~/components/accordion";
+
+import { Button } from "~/components/common";
 import { Board } from "~/components/board";
 
 type BoardIdPageProps = {

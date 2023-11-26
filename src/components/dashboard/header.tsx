@@ -1,7 +1,7 @@
 import { LogOut } from "lucide-react";
-
-import { Button } from "..";
 import Link from "next/link";
+
+import { Button } from "~/components/common";
 
 export function Header() {
   return (

@@ -15,12 +15,6 @@ export async function GET(
         select: {
           id: true,
           name: true,
-          tags: {
-            select: {
-              color: true,
-              slug: true,
-            },
-          },
           descriptions: true,
           status: true,
           updated_at: true,
@@ -35,8 +29,6 @@ export async function GET(
       color: true,
     },
   });
-
-  console.log(boards.tasks[0].expires_at);
 
   return NextResponse.json({ data: boards }, { status: 200 });
 }

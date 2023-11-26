@@ -25,8 +25,6 @@ async function loadTaskById(taskId: string) {
 export default async function Page({ params }: { params: { taskId: string } }) {
   const data = await loadTaskById(params.taskId);
 
-  console.log(data);
-
   return (
     <div>
       <h1>Task</h1>

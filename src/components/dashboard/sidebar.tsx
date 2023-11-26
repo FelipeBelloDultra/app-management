@@ -1,5 +1,4 @@
-import { Links } from "./components/links";
-import { CreateBoard } from "./components/create-board";
+import { CreateBoard, Links } from ".";
 
 interface BoardsResponse {
   data: Array<{

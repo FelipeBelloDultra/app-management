@@ -1,7 +1,7 @@
 "use client";
 
 import { tv } from "tailwind-variants";
-import { Accordion } from "../accordion";
+import { Accordion } from "../common";
 
 interface BoardProps {
   tasks: {

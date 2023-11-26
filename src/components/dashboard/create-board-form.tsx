@@ -1,9 +1,11 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button, Input, Label, Modal } from "~/components";
+import { Button, Input, Label, Modal } from "~/components/common";
 
 const createBoardSchema = z.object({
   name: z.string().min(4, {
