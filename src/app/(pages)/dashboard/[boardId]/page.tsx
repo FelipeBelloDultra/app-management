@@ -1,7 +1,6 @@
 import Image from "next/image";
 
-import { Button } from "~/components/common";
-import { Board } from "~/components/board";
+import { TaskBoard, CreateTask } from "~/components/board";
 
 type BoardIdPageProps = {
   params: {
@@ -62,14 +61,12 @@ export default async function Page({ params }: BoardIdPageProps) {
 
         <pre className="text-sm text-gray-600">{data.description}</pre>
 
-        <Button className="w-[200px]" size="sm">
-          Create new task
-        </Button>
+        <CreateTask />
       </header>
 
       <section className="relative h-full">
         {!!data.tasks.length ? (
-          <Board tasks={data.tasks} />
+          <TaskBoard tasks={data.tasks} />
         ) : (
           <div className="text-center">
             <Image
