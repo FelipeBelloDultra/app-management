@@ -23,7 +23,6 @@ export async function PUT(
     },
   });
 
-  revalidateTag(`boards-${boardId}`);
   revalidateTag(`task-${updatedTask.id}`);
 
   return NextResponse.json({ data: updatedTask }, { status: 201 });

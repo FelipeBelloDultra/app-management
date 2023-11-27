@@ -2,33 +2,30 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "~/lib/prisma";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+interface Context {
+  params: {
+    id: string;
+  };
+}
+
+export async function GET(request: NextRequest, { params }: Context) {
   const boards = await prisma.board.findUniqueOrThrow({
     where: {
       id: params.id,
     },
     select: {
-      tasks: {
-        select: {
-          id: true,
-          name: true,
-          descriptions: true,
-          status: true,
-          updated_at: true,
-          created_at: true,
-          expires_at: true,
-        },
-      },
+      id: true,
+      name: true,
+      color: true,
       description: true,
       created_at: true,
-      name: true,
-      id: true,
-      color: true,
     },
   });
 
-  return NextResponse.json({ data: boards }, { status: 200 });
+  return NextResponse.json(
+    {
+      data: boards,
+    },
+    { status: 200 }
+  );
 }
