@@ -6,30 +6,42 @@ type BoardIdPageProps = {
   params: {
     boardId: string;
   };
+  searchParams?: {
+    [key: string]: string | string[] | undefined;
+  };
 };
 
 interface BoardResponse {
   data: {
-    id: string;
-    name: string;
-    descriptions: string;
-    status: "WAITING" | "DOING" | "FINISHED";
-    expires_at: Date;
-    created_at: Date;
-    updated_at: Date;
-    board_id: string;
-  }[];
+    tasks: {
+      id: string;
+      name: string;
+      descriptions: string;
+      status: "WAITING" | "DOING" | "FINISHED";
+      expires_at: Date;
+      created_at: Date;
+      updated_at: Date;
+      board_id: string;
+    }[];
+    total: number;
+  };
 }
 
-async function getBoardById(boardId: string) {
+async function getBoardById(
+  boardId: string,
+  params: {
+    page: string;
+    limit: string;
+  }
+) {
   const response = await fetch(
-    `http://localhost:3000/api/boards/${boardId}/tasks`,
+    `http://localhost:3000/api/boards/${boardId}/tasks?${new URLSearchParams({
+      page: params.page,
+      limit: params.limit,
+    })}`,
     {
       method: "GET",
-      // cache: 'no-store',
-      next: {
-        revalidate: 60 * 60 * 1, // 1 hour
-      },
+      cache: "no-store",
     }
   );
   const { data }: BoardResponse = await response.json();
@@ -37,11 +49,17 @@ async function getBoardById(boardId: string) {
   return data;
 }
 
-export default async function Page({ params }: BoardIdPageProps) {
-  const data = await getBoardById(params.boardId);
+export default async function Page({ params, searchParams }: BoardIdPageProps) {
+  const page = searchParams?.page || "1";
+  const limit = searchParams?.limit || "10";
 
-  return data.length ? (
-    <TaskBoard tasks={data} />
+  const data = await getBoardById(params.boardId, {
+    limit: String(limit),
+    page: String(page),
+  });
+
+  return data.tasks.length ? (
+    <TaskBoard tasks={data.tasks} total={data.total} />
   ) : (
     <div className="text-center">
       <Image

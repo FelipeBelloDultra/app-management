@@ -6,21 +6,43 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const tasks = await prisma.task.findMany({
-    where: {
-      board_id: params.id,
-    },
-    select: {
-      id: true,
-      name: true,
-      board_id: true,
-      descriptions: true,
-      status: true,
-      created_at: true,
-      expires_at: true,
-      updated_at: true,
-    },
-  });
+  const url = request.nextUrl.searchParams;
 
-  return NextResponse.json({ data: tasks }, { status: 200 });
+  let page = Number(url.get("page") || "1");
+  let limit = Number(url.get("limit") || "10");
+
+  if (isNaN(limit) || isNaN(page) || limit <= 0 || page <= 0) {
+    limit = 10;
+    page = 1;
+  }
+
+  const [totalTasks, tasks] = await Promise.all([
+    prisma.task.count({
+      where: {
+        board_id: params.id,
+      },
+    }),
+    prisma.task.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: {
+        board_id: params.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        board_id: true,
+        descriptions: true,
+        status: true,
+        created_at: true,
+        expires_at: true,
+        updated_at: true,
+      },
+    }),
+  ]);
+
+  return NextResponse.json(
+    { data: { tasks, total: totalTasks } },
+    { status: 200 }
+  );
 }
