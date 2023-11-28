@@ -10,24 +10,32 @@ export async function GET(
 
   let page = Number(url.get("page") || "1");
   let limit = Number(url.get("limit") || "10");
+  let status = String(url.get("status"));
+
+  const where: {
+    board_id: string;
+    status?: "WAITING" | "DOING" | "FINISHED";
+  } = {
+    board_id: params.id,
+  };
 
   if (isNaN(limit) || isNaN(page) || limit <= 0 || page <= 0) {
     limit = 10;
     page = 1;
   }
 
+  if (status === "WAITING" || status === "DOING" || status === "FINISHED") {
+    where.status = status;
+  }
+
   const [totalTasks, tasks] = await Promise.all([
     prisma.task.count({
-      where: {
-        board_id: params.id,
-      },
+      where,
     }),
     prisma.task.findMany({
       skip: (page - 1) * limit,
       take: limit,
-      where: {
-        board_id: params.id,
-      },
+      where,
       select: {
         id: true,
         name: true,

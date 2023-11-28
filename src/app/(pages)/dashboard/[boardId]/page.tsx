@@ -32,12 +32,14 @@ async function getBoardById(
   params: {
     page: string;
     limit: string;
+    status: string;
   }
 ) {
   const response = await fetch(
     `http://localhost:3000/api/boards/${boardId}/tasks?${new URLSearchParams({
       page: params.page,
       limit: params.limit,
+      status: params.status,
     })}`,
     {
       method: "GET",
@@ -50,15 +52,17 @@ async function getBoardById(
 }
 
 export default async function Page({ params, searchParams }: BoardIdPageProps) {
-  const page = searchParams?.page || "1";
-  const limit = searchParams?.limit || "10";
+  const page = String(searchParams?.page || "1");
+  const limit = String(searchParams?.limit || "10");
+  const status = String(searchParams?.status || "");
 
   const data = await getBoardById(params.boardId, {
-    limit: String(limit),
-    page: String(page),
+    limit,
+    page,
+    status,
   });
 
-  return data.tasks.length ? (
+  return data.tasks.length || data.total !== 0 ? (
     <TaskBoard tasks={data.tasks} total={data.total} />
   ) : (
     <div className="text-center">
