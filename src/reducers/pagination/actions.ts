@@ -25,10 +25,13 @@ export function changeQueryLimit(payload: QueryOption): PaginationAction {
   };
 }
 
-// [TODO]: FIX THIS TYPE RETURN
 export function clearQuery(): PaginationAction {
   return {
     type: PaginationActionTypes.CLEAR_QUERY,
-    payload: {} as QueryOption,
+    payload: {
+      displayText: "",
+      id: "",
+      value: "",
+    },
   };
 }
