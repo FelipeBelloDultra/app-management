@@ -71,12 +71,24 @@ const STATUS = [
 ];
 
 export function TaskBoard({ tasks, total }: BoardProps) {
-  const [selectedLimit, setSelectedLimit] = useState(LIMITS[1]);
-  const [selectedStatus, setSelectedStatus] = useState(STATUS[0]);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const limit = searchParams.get("limit");
+  const status = searchParams.get("status");
+  const page = searchParams.get("page");
+
+  const [selectedLimit, setSelectedLimit] = useState(() => {
+    return LIMITS.find((l) => l.value === limit) || LIMITS[1];
+  });
+  const [selectedStatus, setSelectedStatus] = useState(() => {
+    return STATUS.find((s) => s.value === status) || STATUS[0];
+  });
   const [selectedPage, setSelectedPage] = useState({
-    id: "page-1",
-    value: "1",
-    displayText: "1",
+    id: `page-${page || 1}`,
+    value: `${page || 1}`,
+    displayText: `${page || 1}`,
   });
 
   const PAGES = useMemo(() => {
@@ -90,17 +102,13 @@ export function TaskBoard({ tasks, total }: BoardProps) {
         displayText: `${i + 1}`,
       })
     );
-  }, [selectedLimit, total]);
-
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  }, [selectedLimit.value, total]);
 
   useEffect(() => {
-    setSelectedPage(PAGES[0]);
-  }, [PAGES]);
+    setSelectedPage(PAGES.find((p) => p.value === page) || PAGES[0]);
+  }, [PAGES, page]);
 
-  function handleApplyFilters() {
+  const handleApplyFilters = useCallback(() => {
     const params = new URLSearchParams(searchParams);
 
     params.delete("status");
@@ -114,7 +122,14 @@ export function TaskBoard({ tasks, total }: BoardProps) {
     const paramsToString = params.toString();
 
     router.push(`${pathname}?${paramsToString}`);
-  }
+  }, [
+    pathname,
+    router,
+    searchParams,
+    selectedLimit.value,
+    selectedPage.value,
+    selectedStatus.value,
+  ]);
 
   function handleClearFilters() {
     router.push(pathname);
@@ -142,14 +157,20 @@ export function TaskBoard({ tasks, total }: BoardProps) {
           label="Per page"
           defaultValue={selectedLimit}
           data={LIMITS}
-          onSelect={setSelectedLimit}
+          onSelect={(value) => {
+            setSelectedPage(PAGES[0]);
+            setSelectedLimit(value);
+          }}
         />
 
         <Select
           label="Status"
           defaultValue={selectedStatus}
           data={STATUS}
-          onSelect={setSelectedStatus}
+          onSelect={(value) => {
+            setSelectedPage(PAGES[0]);
+            setSelectedStatus(value);
+          }}
         />
 
         <div className="flex flex-col gap-2">
