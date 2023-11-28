@@ -35,6 +35,18 @@ export function paginationReducer(state: PaginationState, action: ActionType) {
         page: payload,
       };
 
+    case PaginationActionTypes.SELECT_QUERY_ORDER_BY:
+      return {
+        ...state,
+        orderBy: payload,
+      };
+
+    case PaginationActionTypes.SELECT_QUERY_SORT:
+      return {
+        ...state,
+        sort: payload,
+      };
+
     case PaginationActionTypes.CLEAR_QUERY:
       return {
         page: {
@@ -51,6 +63,16 @@ export function paginationReducer(state: PaginationState, action: ActionType) {
           id: "limit-10",
           value: "10",
           displayText: "10",
+        },
+        orderBy: {
+          id: "order-by-created_at",
+          value: "created_at",
+          displayText: "Created at",
+        },
+        sort: {
+          id: "sort-desc",
+          value: "desc",
+          displayText: "Desc",
         },
       };
 

@@ -5,7 +5,9 @@ import { paginationReducer } from "~/reducers/pagination/reducer";
 import { PaginationState, QueryOption } from "~/reducers/pagination/interfaces";
 import {
   changeQueryLimit,
+  changeQueryOrderBy,
   changeQueryPage,
+  changeQuerySort,
   changeQueryStatus,
   clearQuery,
 } from "~/reducers/pagination/actions";
@@ -59,6 +61,35 @@ const TOTAL_STATUS = [
     displayText: "Finished",
   },
 ];
+const TOTAL_SORT = [
+  {
+    id: "sort-desc",
+    value: "desc",
+    displayText: "Desc",
+  },
+  {
+    id: "sort-asc",
+    value: "asc",
+    displayText: "Asc",
+  },
+];
+const TOTAL_ORDER_BY = [
+  {
+    id: "order-by-created_at",
+    value: "created_at",
+    displayText: "Created at",
+  },
+  {
+    id: "order-by-updated_at",
+    value: "updated_at",
+    displayText: "Updated at",
+  },
+  {
+    id: "order-by-expires_at",
+    value: "expires_at",
+    displayText: "Expires at",
+  },
+];
 
 export function useBoardPagination(total: number) {
   const searchParams = useSearchParams();
@@ -68,10 +99,15 @@ export function useBoardPagination(total: number) {
   const limit = searchParams.get("limit");
   const status = searchParams.get("status");
   const page = searchParams.get("page");
+  const orderBy = searchParams.get("order_by");
+  const sort = searchParams.get("sort");
 
   const [state, dispatch] = useReducer(paginationReducer, {
     limit: TOTAL_LIMITS.find((l) => l.value === limit) || TOTAL_LIMITS[1],
     status: TOTAL_STATUS.find((s) => s.value === status) || TOTAL_STATUS[0],
+    orderBy:
+      TOTAL_ORDER_BY.find((o) => o.value === orderBy) || TOTAL_ORDER_BY[0],
+    sort: TOTAL_SORT.find((s) => s.value === sort) || TOTAL_SORT[0],
     page: {
       id: `page-${page || 1}`,
       value: `${page || 1}`,
@@ -98,6 +134,8 @@ export function useBoardPagination(total: number) {
     params.delete("status");
     params.set("page", state.page.value);
     params.set("limit", state.limit.value);
+    params.set("order_by", state.orderBy.value);
+    params.set("sort", state.sort.value);
 
     if (!!state.status.value) {
       params.set("status", state.status.value);
@@ -113,6 +151,8 @@ export function useBoardPagination(total: number) {
     state.limit.value,
     state.page.value,
     state.status.value,
+    state.orderBy.value,
+    state.sort.value,
   ]);
 
   function handleClearFilters() {
@@ -132,17 +172,31 @@ export function useBoardPagination(total: number) {
     dispatch(changeQueryStatus(payload));
   }
 
+  function handleSelectOrderBy(payload: QueryOption) {
+    dispatch(changeQueryOrderBy(payload));
+  }
+
+  function handleSelectSort(payload: QueryOption) {
+    dispatch(changeQuerySort(payload));
+  }
+
   return {
     handleSelectStatus,
     handleSelectPage,
     handleSelectLimit,
+    handleSelectOrderBy,
+    handleSelectSort,
     handleClearFilters,
     handleApplyFilters,
     status: state.status,
     limit: state.limit,
     page: state.page,
+    sort: state.sort,
+    orderBy: state.orderBy,
     TOTAL_PAGES,
     TOTAL_LIMITS,
     TOTAL_STATUS,
+    TOTAL_SORT,
+    TOTAL_ORDER_BY,
   };
 }

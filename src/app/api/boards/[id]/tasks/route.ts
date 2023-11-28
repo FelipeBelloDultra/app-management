@@ -11,6 +11,8 @@ export async function GET(
   let page = Number(url.get("page") || "1");
   let limit = Number(url.get("limit") || "10");
   let status = String(url.get("status"));
+  let orderBy = String(url.get("order_by"));
+  let sort = String(url.get("sort"));
 
   const where: {
     board_id: string;
@@ -18,6 +20,18 @@ export async function GET(
   } = {
     board_id: params.id,
   };
+
+  if (
+    orderBy !== "updated_at" &&
+    orderBy !== "created_at" &&
+    orderBy !== "expires_at"
+  ) {
+    orderBy = "created_at";
+  }
+
+  if (sort !== "asc" && sort !== "desc") {
+    sort = "desc";
+  }
 
   if (isNaN(limit) || isNaN(page) || limit <= 0 || page <= 0) {
     limit = 10;
@@ -35,6 +49,9 @@ export async function GET(
     prisma.task.findMany({
       skip: (page - 1) * limit,
       take: limit,
+      orderBy: {
+        [orderBy]: sort,
+      },
       where,
       select: {
         id: true,

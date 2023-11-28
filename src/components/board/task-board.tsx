@@ -24,14 +24,20 @@ export function TaskBoard({ tasks, total }: BoardProps) {
     handleSelectStatus,
     handleSelectPage,
     handleSelectLimit,
+    handleSelectOrderBy,
+    handleSelectSort,
     handleClearFilters,
     handleApplyFilters,
     limit,
     page,
     status,
+    sort,
+    orderBy,
     TOTAL_PAGES,
     TOTAL_LIMITS,
     TOTAL_STATUS,
+    TOTAL_SORT,
+    TOTAL_ORDER_BY,
   } = useBoardPagination(total);
 
   return (
@@ -57,6 +63,20 @@ export function TaskBoard({ tasks, total }: BoardProps) {
           defaultValue={limit}
           data={TOTAL_LIMITS}
           onSelect={handleSelectLimit}
+        />
+
+        <Select
+          label="Sort by"
+          defaultValue={sort}
+          data={TOTAL_SORT}
+          onSelect={handleSelectSort}
+        />
+
+        <Select
+          label="Order by"
+          defaultValue={orderBy}
+          data={TOTAL_ORDER_BY}
+          onSelect={handleSelectOrderBy}
         />
 
         <Select
