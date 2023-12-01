@@ -28,10 +28,10 @@ model Board {
 }
 
 model Task {
-  id           String     @id @default(uuid())
-  name         String
-  descriptions String
-  status       TaskStatus @default(WAITING)
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  status      TaskStatus @default(WAITING)
 
   expires_at DateTime
   created_at DateTime @default(now())

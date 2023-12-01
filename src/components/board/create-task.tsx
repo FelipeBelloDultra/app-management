@@ -3,26 +3,26 @@
 import { useState } from "react";
 
 import { Button, Modal } from "~/components/common";
-import { CreateTaskForm } from ".";
+import { TaskForm } from "~/components/board";
 
 export function CreateTask() {
-  const [openCreateBoardModal, setOpenCreateBoardModal] = useState(false);
+  const [openCreateTaskModal, setOpenCreateTaskModal] = useState(false);
 
   return (
     <>
       <Button
         className="w-[200px]"
         size="sm"
-        onClick={() => setOpenCreateBoardModal(true)}
+        onClick={() => setOpenCreateTaskModal(true)}
       >
         Create new task
       </Button>
 
       <Modal.Root
-        open={openCreateBoardModal}
-        onClose={() => setOpenCreateBoardModal(false)}
+        open={openCreateTaskModal}
+        onClose={() => setOpenCreateTaskModal(false)}
       >
-        <CreateTaskForm />
+        <TaskForm onCloseForm={() => setOpenCreateTaskModal(false)} />
       </Modal.Root>
     </>
   );

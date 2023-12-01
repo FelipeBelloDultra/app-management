@@ -16,7 +16,7 @@ interface BoardResponse {
     tasks: {
       id: string;
       name: string;
-      descriptions: string;
+      description: string;
       status: "WAITING" | "DOING" | "FINISHED";
       expires_at: Date;
       created_at: Date;

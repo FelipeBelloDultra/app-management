@@ -1,6 +1,29 @@
+import { TaskStatus } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 import { prisma } from "~/lib/prisma";
+
+const taskSchema = z.object({
+  status: z.string(),
+  name: z.string().min(4, {
+    message: "Enter at least 4 characters",
+  }),
+  description: z
+    .string()
+    .min(4, {
+      message: "Enter at least 4 characters",
+    })
+    .max(255, {
+      message: "Enter a maximum of 255 characters",
+    }),
+  expires_at: z
+    .string()
+    .transform((expiresAt) => new Date(expiresAt))
+    .refine((expiresAt) => expiresAt.getTime() >= new Date().getTime(), {
+      message: "The expiration date must be greater than the current date",
+    }),
+});
 
 export async function GET(
   request: NextRequest,
@@ -57,7 +80,7 @@ export async function GET(
         id: true,
         name: true,
         board_id: true,
-        descriptions: true,
+        description: true,
         status: true,
         created_at: true,
         expires_at: true,
@@ -70,4 +93,44 @@ export async function GET(
     { data: { tasks, total: totalTasks } },
     { status: 200 }
   );
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const boardId = params.id;
+  const data = await request.json();
+
+  await prisma.task.update({
+    where: {
+      id: data.id,
+      board_id: boardId,
+    },
+    data,
+  });
+
+  return NextResponse.json({}, { status: 200 });
+}
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const boardId = params.id;
+  const data = await request.json();
+
+  const { description, expires_at, name, status } = taskSchema.parse(data);
+
+  const { id } = await prisma.task.create({
+    data: {
+      board_id: boardId,
+      description,
+      expires_at,
+      name,
+      status: status as TaskStatus,
+    },
+  });
+
+  return NextResponse.json({ data: { id } }, { status: 201 });
 }

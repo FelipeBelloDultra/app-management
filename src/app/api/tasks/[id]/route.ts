@@ -43,7 +43,7 @@ export async function GET(
     },
     select: {
       board_id: true,
-      descriptions: true,
+      description: true,
       id: true,
       name: true,
       created_at: true,

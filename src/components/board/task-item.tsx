@@ -1,6 +1,5 @@
 import { tv } from "tailwind-variants";
-import { Accordion } from "../common";
-import Link from "next/link";
+import { Accordion, Button } from "../common";
 
 const taskStatusStyle = tv({
   base: "border-2 font-bold text-sm py-1 px-2 self-start ml-4 rounded-full",
@@ -21,26 +20,29 @@ interface TaskItemProps {
     id: string;
     name: string;
     status: "WAITING" | "DOING" | "FINISHED";
-    descriptions: string | null;
+    description: string | null;
     created_at: Date;
     updated_at: Date;
     expires_at: Date;
   };
+  onTaskItemClick: (task: {
+    id: string;
+    name: string;
+    status: "WAITING" | "DOING" | "FINISHED";
+    description: string | null;
+    expires_at: Date;
+  }) => void;
 }
 
-export function TaskItem({ task }: TaskItemProps) {
+export function TaskItem({ task, onTaskItemClick }: TaskItemProps) {
   return (
     <span className="flex flex-col">
       <Accordion.Root>
         <Accordion.Header>
           <div className="flex justify-between w-3/4">
-            <Link
-              prefetch={false}
-              href={`/dashboard/task/${task.id}`}
-              className="capitalize font-medium text-xl text-blue-600 self-center text-left truncate max-w-xs hover:text-blue-800 hover:underline transition-all"
-            >
+            <h3 className="capitalize font-medium text-xl  text-gray-500 self-center text-left truncate max-w-xs">
               {task.name}
-            </Link>
+            </h3>
 
             <span
               className={taskStatusStyle({
@@ -64,7 +66,7 @@ export function TaskItem({ task }: TaskItemProps) {
                 </h4>
 
                 <p className="text-sm font-medium text-gray-800 mt-2 pr-4">
-                  {task.descriptions}
+                  {task.description}
                 </p>
               </div>
               <div className="flex flex-col gap-2">
@@ -88,6 +90,22 @@ export function TaskItem({ task }: TaskItemProps) {
                     new Date(task.expires_at)
                   )}
                 </p>
+
+                <Button
+                  size="sm"
+                  color="secondary"
+                  onClick={() =>
+                    onTaskItemClick({
+                      description: task.description,
+                      expires_at: task.expires_at,
+                      id: task.id,
+                      name: task.name,
+                      status: task.status,
+                    })
+                  }
+                >
+                  Edit
+                </Button>
               </div>
             </div>
           </div>
