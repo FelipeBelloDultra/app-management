@@ -53,7 +53,5 @@ export async function GET(
     },
   });
 
-  revalidateTag(`task-${id}`);
-
   return NextResponse.json({ data: task }, { status: 200 });
 }

@@ -1,5 +1,6 @@
 import { tv } from "tailwind-variants";
 import { Accordion } from "../common";
+import Link from "next/link";
 
 const taskStatusStyle = tv({
   base: "border-2 font-bold text-sm py-1 px-2 self-start ml-4 rounded-full",
@@ -17,6 +18,7 @@ const taskStatusStyle = tv({
 
 interface TaskItemProps {
   task: {
+    id: string;
     name: string;
     status: "WAITING" | "DOING" | "FINISHED";
     descriptions: string | null;
@@ -32,9 +34,13 @@ export function TaskItem({ task }: TaskItemProps) {
       <Accordion.Root>
         <Accordion.Header>
           <div className="flex justify-between w-3/4">
-            <h3 className="capitalize font-medium text-xl text-gray-500 self-center text-left">
+            <Link
+              prefetch={false}
+              href={`/dashboard/task/${task.id}`}
+              className="capitalize font-medium text-xl text-blue-600 self-center text-left truncate max-w-xs hover:text-blue-800 hover:underline transition-all"
+            >
               {task.name}
-            </h3>
+            </Link>
 
             <span
               className={taskStatusStyle({
@@ -51,13 +57,17 @@ export function TaskItem({ task }: TaskItemProps) {
 
         <Accordion.Content>
           <div>
-            <div className="flex">
-              <div className="w-3/4">
-                <p className="text-sm font-medium text-gray-800 pr-4">
+            <div className="flex justify-between">
+              <div className="flex-1">
+                <h4 className="font-medium text-lg text-gray-500">
+                  {task.name}
+                </h4>
+
+                <p className="text-sm font-medium text-gray-800 mt-2 pr-4">
                   {task.descriptions}
                 </p>
               </div>
-              <div className="w-1/4 flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
                 <p className="font-medium text-sm text-gray-500 text-right">
                   created at:{" "}
                   {Intl.DateTimeFormat("pt-BR").format(
